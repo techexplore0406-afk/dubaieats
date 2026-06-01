@@ -1347,13 +1347,21 @@ function updateSaveBtn(saved){
 }
 
 
+function buildMapsUrl(r) {
+  if (r.mapsUrl) {
+    const match = r.mapsUrl.match(/place_id:([A-Za-z0-9_-]+)/);
+    if (match) {
+      return 'https://www.google.com/maps/search/?api=1&query=' +
+        encodeURIComponent(r.name) + '&query_place_id=' + match[1];
+    }
+  }
+  return 'https://www.google.com/maps/search/?api=1&query=' +
+    encodeURIComponent(r.name + ', ' + r.area + ', Dubai');
+}
+
 function openMaps(){
   if(!state.currentRestaurant) return;
-  const r = state.currentRestaurant;
-  const url = r.mapsUrl
-    ? r.mapsUrl
-    : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(r.name + ', ' + r.area + ', Dubai');
-  window.open(url, '_blank');
+  window.open(buildMapsUrl(state.currentRestaurant), '_blank');
 }
 
 
@@ -1408,10 +1416,7 @@ function viewSaved(id){
 function dirSaved(id){
   const r=state.saved.find(s=>s.id===id);
   if(!r) return;
-  const url = r.mapsUrl
-    ? r.mapsUrl
-    : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(r.name + ', ' + r.area + ', Dubai');
-  window.open(url, '_blank');
+  window.open(buildMapsUrl(r), '_blank');
 }
 function removeSaved(id){
   state.saved=state.saved.filter(s=>s.id!==id);
