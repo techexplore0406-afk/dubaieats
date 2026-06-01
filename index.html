@@ -1349,7 +1349,11 @@ function updateSaveBtn(saved){
 
 function openMaps(){
   if(!state.currentRestaurant) return;
-  window.open(state.currentRestaurant.mapsUrl,'_blank');
+  const r = state.currentRestaurant;
+  const url = r.mapsUrl
+    ? r.mapsUrl
+    : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(r.name + ', ' + r.area + ', Dubai');
+  window.open(url, '_blank');
 }
 
 
@@ -1404,7 +1408,10 @@ function viewSaved(id){
 function dirSaved(id){
   const r=state.saved.find(s=>s.id===id);
   if(!r) return;
-  window.open(r.mapsUrl,'_blank');
+  const url = r.mapsUrl
+    ? r.mapsUrl
+    : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(r.name + ', ' + r.area + ', Dubai');
+  window.open(url, '_blank');
 }
 function removeSaved(id){
   state.saved=state.saved.filter(s=>s.id!==id);
